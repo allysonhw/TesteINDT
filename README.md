@@ -2,18 +2,6 @@
 
 Sistema de análise e contratação de empréstimos desenvolvido em TypeScript seguindo os princípios da **Arquitetura Hexagonal** (Ports & Adapters).
 
-## 📋 Índice
-
-- [Sobre o Projeto](#sobre-o-projeto)
-- [Arquitetura](#arquitetura)
-- [Regras de Negócio](#regras-de-negócio)
-- [Tecnologias](#tecnologias)
-- [Instalação e Execução](#instalação-e-execução)
-- [Endpoints da API](#endpoints-da-api)
-- [Estrutura dos Microserviços](#estrutura-dos-microserviços)
-- [Migrations](#migrations)
-- [Testando a Aplicação](#testando-a-aplicação)
-
 ## 🎯 Sobre o Projeto
 
 Sistema completo de empréstimos que analisa propostas de clientes e realiza contratações seguindo regras de negócio específicas. Implementado como **arquitetura de microserviços** com:
