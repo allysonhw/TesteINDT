@@ -1,0 +1,66 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using ContratacoesService.Data;
+
+#nullable disable
+
+namespace ContratacoesService.Migrations
+{
+    [DbContext(typeof(ContratoesDbContext))]
+    partial class ContratoesDbContextModelSnapshot : ModelSnapshot
+    {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
+#pragma warning disable 612, 618
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ContratacoesService.Domain.Entities.Contratacao", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<DateTime>("DataContratacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MotivoReprovacao")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("PropostaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("TaxaJuros")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("ValorEmprestimo")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Cpf");
+
+                    b.HasIndex("PropostaId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Contratacoes");
+                });
+#pragma warning restore 612, 618
+        }
+    }
+}

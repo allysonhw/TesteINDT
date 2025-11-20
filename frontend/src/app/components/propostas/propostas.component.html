@@ -1,0 +1,131 @@
+<div class="card">
+  <h2>Nova Proposta de Empréstimo</h2>
+  
+  <div *ngIf="mensagem" [class]="'alert alert-' + tipoMensagem">
+    {{ mensagem }}
+  </div>
+
+  <form (ngSubmit)="criarProposta()" #propostaForm="ngForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cpf">CPF:</label>
+        <input 
+          type="text" 
+          id="cpf" 
+          name="cpf" 
+          [(ngModel)]="novaProposta.cpf" 
+          maxlength="11"
+          required
+          placeholder="Apenas números">
+      </div>
+
+      <div class="form-group">
+        <label for="nome">Nome Completo:</label>
+        <input 
+          type="text" 
+          id="nome" 
+          name="nome" 
+          [(ngModel)]="novaProposta.nome" 
+          required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="idade">Idade:</label>
+        <input 
+          type="number" 
+          id="idade" 
+          name="idade" 
+          [(ngModel)]="novaProposta.idade" 
+          min="18" 
+          max="100"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="renda">Renda Mensal (R$):</label>
+        <input 
+          type="number" 
+          id="renda" 
+          name="renda" 
+          [(ngModel)]="novaProposta.renda" 
+          min="0"
+          step="0.01"
+          required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="score">Score de Crédito:</label>
+        <input 
+          type="number" 
+          id="score" 
+          name="score" 
+          [(ngModel)]="novaProposta.score" 
+          min="0" 
+          max="1000"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="valorSolicitado">Valor Solicitado (R$):</label>
+        <input 
+          type="number" 
+          id="valorSolicitado" 
+          name="valorSolicitado" 
+          [(ngModel)]="novaProposta.valorSolicitado" 
+          min="0"
+          step="0.01"
+          required>
+      </div>
+    </div>
+
+    <button 
+      type="submit" 
+      class="btn btn-primary" 
+      [disabled]="!propostaForm.form.valid || carregando">
+      {{ carregando ? 'Processando...' : 'Solicitar Empréstimo' }}
+    </button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Propostas Cadastradas</h2>
+  
+  <div *ngIf="carregando" class="loading">Carregando...</div>
+  
+  <table *ngIf="!carregando && propostas.length > 0">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Valor</th>
+        <th>Taxa</th>
+        <th>Status</th>
+        <th>Motivo</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let proposta of propostas">
+        <td>{{ proposta.nome }}</td>
+        <td>{{ proposta.cpf }}</td>
+        <td>{{ proposta.valorSolicitado | currency:'BRL' }}</td>
+        <td>{{ proposta.taxaJuros ? (proposta.taxaJuros + '%') : '-' }}</td>
+        <td>
+          <span [class]="'status-badge ' + getStatusClass(proposta.status)">
+            {{ proposta.status }}
+          </span>
+        </td>
+        <td>{{ proposta.motivoReprovacao || '-' }}</td>
+        <td>{{ proposta.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!carregando && propostas.length === 0" class="no-data">
+    Nenhuma proposta cadastrada.
+  </p>
+</div>

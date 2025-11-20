@@ -1,0 +1,67 @@
+<div class="card">
+  <h2>Nova Contratação</h2>
+  
+  <div *ngIf="mensagem" [class]="'alert alert-' + tipoMensagem">
+    {{ mensagem }}
+  </div>
+
+  <form (ngSubmit)="criarContratacao()">
+    <div class="form-group">
+      <label for="proposta">Selecione uma Proposta Aprovada:</label>
+      <select 
+        id="proposta" 
+        name="proposta" 
+        [(ngModel)]="propostaIdSelecionada"
+        required>
+        <option value="">-- Selecione --</option>
+        <option *ngFor="let proposta of propostasAprovadas" [value]="proposta.id">
+          {{ proposta.nome }} - {{ proposta.cpf }} - R$ {{ proposta.valorSolicitado | number:'1.2-2' }} (Taxa: {{ proposta.taxaJuros }}%)
+        </option>
+      </select>
+    </div>
+
+    <button 
+      type="submit" 
+      class="btn btn-success" 
+      [disabled]="!propostaIdSelecionada || carregando">
+      {{ carregando ? 'Processando...' : 'Efetivar Contratação' }}
+    </button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Contratações Realizadas</h2>
+  
+  <div *ngIf="carregando" class="loading">Carregando...</div>
+  
+  <table *ngIf="!carregando && contratacoes.length > 0">
+    <thead>
+      <tr>
+        <th>CPF</th>
+        <th>Valor</th>
+        <th>Taxa</th>
+        <th>Status</th>
+        <th>Motivo</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contratacao of contratacoes">
+        <td>{{ contratacao.cpf }}</td>
+        <td>{{ contratacao.valorEmprestimo | currency:'BRL' }}</td>
+        <td>{{ contratacao.taxaJuros }}%</td>
+        <td>
+          <span [class]="'status-badge ' + getStatusClass(contratacao.status)">
+            {{ contratacao.status }}
+          </span>
+        </td>
+        <td>{{ contratacao.motivoReprovacao || '-' }}</td>
+        <td>{{ contratacao.dataContratacao | date:'dd/MM/yyyy HH:mm' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!carregando && contratacoes.length === 0" class="no-data">
+    Nenhuma contratação realizada.
+  </p>
+</div>
